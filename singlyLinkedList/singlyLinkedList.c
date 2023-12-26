@@ -1,5 +1,17 @@
 #pragma once
 #include "singlyLinkedList.h"
+// sweeney's hand-rolled singly linked list.
+//
+// pos = "position".
+// ptr = "pointer".
+//
+// error codes:
+// 0	no error.
+// 1	list is nullptr.
+// 2	ptr is nullptr.
+// 5	list has only one node.
+// -1	pos/ptr not in list.
+// -2	no action needed.
 
 struct node* init(int data)
 {
@@ -84,6 +96,54 @@ int deleteBack(struct node** list)
 	} while (*list != NULL);
 }
 
+int updatePosData(struct node* list, int pos, int data)
+{
+	if (list == NULL) return 1;
+
+	int tempPos = 0;
+	do {
+		if (tempPos == pos)
+		{
+			list->data = data;
+			return 0;
+		}
+		++tempPos;
+		list = list->next;
+	} while (list != NULL);
+	return -1;
+}
+
+int returnDataPos(struct node* list, int data, int* pos)
+{
+	if (list == NULL) return 1; // list is empty.
+
+	*pos = 0;
+	do {
+		if (list->data == data)
+		{
+			return 0;
+		}
+		++*pos;
+		list = list->next;
+	} while (list != NULL);
+	return -1; // position not in list.
+}
+
+int returnDataPtr(struct node* list, int data, int* ptr)
+{
+	if (list == NULL) return 1; // list is empty.
+
+	do {
+		if (list->data == data)
+		{
+			*ptr = list;
+			return 0;
+		}
+		list = list->next;
+	} while (list != NULL);
+	return -1; // data not in list.
+}
+
 int clear(struct node** list)
 {
 	if (*list == NULL) return 1; // list is already empty.
@@ -96,22 +156,23 @@ int clear(struct node** list)
 	return 0;
 }
 
-int isEmpty(struct node** list)
+int isEmpty(struct node* list)
 {
-	if (*list == NULL) return 1;
+	if (list == NULL) return 1;
 	else return 0;
 }
 
-int size(struct node** list, int *nodeCount)
+int size(struct node* list, int *nodeCount)
 {
 	*nodeCount = 0;
-	if (*list == NULL) return 1;
+	if (list == NULL) return 1;
 
+	struct node* head = list;
 	do {
 		++*nodeCount;
-		struct node* curr = *list;
-		*list = curr->next;
-	} while (*list != NULL);
+		struct node* curr = list;
+		list = curr->next;
+	} while (list != NULL);
 	return 0;
 }
 

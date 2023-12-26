@@ -1,6 +1,10 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.4
+- Updated isEmpty, size functions.
+- Added updatePosData, returnDataPos, and returnDataPtr functions.
+
 v0.0.3
 - Added clear, isEmpty, and size functions.
 - Updated print function to display node list position, data, and addresses.
