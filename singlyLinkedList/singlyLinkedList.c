@@ -84,12 +84,46 @@ int deleteBack(struct node** list)
 	} while (*list != NULL);
 }
 
+int clear(struct node** list)
+{
+	if (*list == NULL) return 1; // list is already empty.
+
+	do {
+		struct node* dummy = *list;
+		*list = dummy->next;
+		free(dummy);
+	} while (*list != NULL);
+	return 0;
+}
+
+int isEmpty(struct node** list)
+{
+	if (*list == NULL) return 1;
+	else return 0;
+}
+
+int size(struct node** list, int *nodeCount)
+{
+	*nodeCount = 0;
+	if (*list == NULL) return 1;
+
+	do {
+		++*nodeCount;
+		struct node* curr = *list;
+		*list = curr->next;
+	} while (*list != NULL);
+	return 0;
+}
+
 int print(struct node* list)
 {
 	if (list == NULL) return 1;
 
+	int tempPos = 0;
+	printf("#\tdata:\tlist:\t\t\tnext:\n");
 	do {
-		printf("list data: %d\n", list->data);
+		printf("%d\t%d\t%p\t%p\n", tempPos, list->data, list, list->next);
+		++tempPos;
 		list = list->next;
 	} while (list != NULL);
 	printf("\n");

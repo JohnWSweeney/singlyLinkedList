@@ -1,6 +1,10 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.3
+- Added clear, isEmpty, and size functions.
+- Updated print function to display node list position, data, and addresses.
+
 v0.0.2
 - Moved functions to separate .h/.c files.
 - Added node declaration header.
