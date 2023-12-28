@@ -1,6 +1,10 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.6
+- Updated deleteFront and deleteBack functions.
+- Added movePosFront function.
+
 v0.0.5
 - Added deletePos, returnPosPtr, returnMinPos, returnMinPtr, returnMaxPos, and returnMaxPtr functions.
 

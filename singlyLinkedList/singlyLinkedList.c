@@ -65,10 +65,9 @@ int deleteFront(struct node** list)
 {
 	if (*list == NULL) return 1;
 
-	struct node* dummy = *list;
 	struct node* head = *list;
 	*list = head->next;
-	free(dummy);
+	free(head);
 	return 0;
 }
 
@@ -77,22 +76,24 @@ int deleteBack(struct node** list)
 	if (*list == NULL) return 1;
 
 	struct node* head = *list;
+	if (head->next == NULL) // check if list has only one node.
+	{
+		free(head);
+		*list = NULL;
+		return 0;
+	}
+
 	do {
-		struct node* dummy = *list;
-		if (dummy->next == NULL) // check if list has only one node.
+		struct node* curr = *list;
+		struct node* dummy = curr->next;
+		if (dummy->next == NULL) // 
 		{
-			free(dummy->next);
-			*list = NULL;
-			return 0;
-		}
-		else if (dummy->next->next == NULL)
-		{
-			free(dummy->next->next);
-			dummy->next = NULL;
+			free(dummy);
+			curr->next = NULL;
 			*list = head;
 			return 0;
 		}
-		*list = dummy->next;
+		*list = curr->next;
 	} while (*list != NULL);
 }
 
@@ -303,6 +304,35 @@ int returnMaxPtr(struct node* list, int* max, struct node** ptr)
 		list = list->next;
 	} while (list != NULL);
 	return 0;
+}
+
+int movePosFront(struct node** list, int pos)
+{
+	if (*list == NULL) return 1; // list is empty.
+
+	if (pos == 0) return 2; // no action needed.
+
+	struct node* head = *list;
+	struct node* prev = head;
+	struct node* curr = NULL;
+
+	*list = head->next;
+	int tempPos = 1;
+	do {
+		curr = *list;
+		if (tempPos == pos)
+		{
+			prev->next = curr->next;
+			curr->next = head;
+			*list = curr;
+			return 0;
+		}
+		++tempPos;
+		prev = curr;
+		*list = curr->next;
+	} while (*list != NULL);
+	*list = head; // position not in list, reset list.
+	return -1;
 }
 
 int clear(struct node** list)

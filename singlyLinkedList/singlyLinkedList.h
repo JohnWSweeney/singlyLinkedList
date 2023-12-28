@@ -30,6 +30,7 @@ int returnMinPos(struct node* list, int* min, int* pos);
 int returnMinPtr(struct node* list, int* min, struct node** ptr);
 int returnMaxPos(struct node* list, int* max, int* pos);
 int returnMaxPtr(struct node* list, int* max, struct node** ptr);
+int movePosFront(struct node** list, int pos);
 int clear(struct node** list);
 int isEmpty(struct node* list);
 int size(struct node* list, int *nodeCount);
