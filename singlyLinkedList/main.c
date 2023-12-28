@@ -3,17 +3,17 @@
 
 int main()
 {
-	printf("singlyLinkedList v0.0.4\n\n");
-	int result;
-	int nodeCount;
-	int data;
-	int position;
+	printf("singlyLinkedList v0.0.5\n\n");
+	int result = 0;
+	int nodeCount = 0;
+	int data = 0;
+	int position = 0;
 	struct node* list = NULL;
 	struct node* ptr = NULL;
 
 	for (int i = 0; i < 9; i++)
 	{
-		addBack(&list, pow(i, 5));
+		addBack(&list, pow(i, 4));
 	}
 	result = size(list, &nodeCount);
 	if (result == 0)
@@ -27,6 +27,7 @@ int main()
 	}
 	/// test code here: ////////////////////////////////////////
 	
+	printf("Result: %d\n", result);
 	////////////////////////////////////////////////////////////
 	result = size(list, &nodeCount);
 	if (result == 0)

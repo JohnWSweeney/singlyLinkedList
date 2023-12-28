@@ -7,8 +7,8 @@
 //
 // error codes:
 // 0	no error.
-// 1	list is nullptr.
-// 2	ptr is nullptr.
+// 1	list is NULL.
+// 2	ptr is NULL.
 // 5	list has only one node.
 // -1	pos/ptr not in list.
 // -2	no action needed.
@@ -96,6 +96,85 @@ int deleteBack(struct node** list)
 	} while (*list != NULL);
 }
 
+int deletePos(struct node** list, int pos)
+{
+	if (*list == NULL) return 1; // list is empty.
+
+	struct node* head = *list;
+	if (pos == 0)
+	{
+		*list = head->next;
+		free(head);
+		return 0;
+	}
+
+	struct node* prev = head; // store previous node address.
+	*list = head->next; // Already checked pos == 0, increment list.
+	int tempPos = 1;
+	do {
+		struct node* curr = *list;
+		if (pos == tempPos)
+		{
+			prev->next = curr->next;
+			free(curr);
+			*list = head;
+			return 0;
+		}
+		++tempPos;
+		prev = curr;
+		*list = curr->next;
+	} while (*list != NULL);
+	*list = head; // position not in list, reset list.
+	return -1;
+}
+
+int deletePtr(struct node** list, struct node* ptr)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2;
+
+	struct node* head = *list;
+	if (ptr == head)
+	{
+		*list = head->next;
+		free(head);
+		return 0;
+	}
+
+	struct node* prev = head;
+	do {
+		struct node* curr = *list;
+		if (curr == ptr)
+		{
+			prev->next = curr->next;
+			free(curr);
+			*list = head;
+			return 0;
+		}
+		prev = curr;
+		*list = curr->next;
+	} while (*list != NULL);
+	*list = head; // pointer not in list, reset list.
+	return -1;
+}
+
+int returnPosPtr(struct node* list, int pos, struct node** ptr)
+{
+	if (list == NULL) return 1; // list is empty.
+
+	int tempPos = 0;
+	do {
+		if (tempPos == pos)
+		{
+			*ptr = list;
+			return 0;
+		}
+		++tempPos;
+		list = list->next;
+	} while (list != NULL);
+	return -1;
+}
+
 int updatePosData(struct node* list, int pos, int data)
 {
 	if (list == NULL) return 1;
@@ -129,19 +208,101 @@ int returnDataPos(struct node* list, int data, int* pos)
 	return -1; // position not in list.
 }
 
-int returnDataPtr(struct node* list, int data, int* ptr)
+int returnDataPtr(struct node* list, int data, int* ptr) /// int ptr????
 {
 	if (list == NULL) return 1; // list is empty.
 
 	do {
 		if (list->data == data)
 		{
-			*ptr = list;
+			ptr = list;
 			return 0;
 		}
 		list = list->next;
 	} while (list != NULL);
 	return -1; // data not in list.
+}
+
+int returnMinPos(struct node* list, int* min, int* pos)
+{
+	if (list == NULL) return 1; // list is empty.
+
+	// iniitialize results with first node.
+	*min = list->data;
+	*pos = 0;
+
+	list = list->next; // increment list.
+	int tempPos = 1;
+	do {
+		if (*min > list->data)
+		{
+			*min = list->data;
+			*pos = tempPos;
+		}
+		++tempPos;
+		list = list->next;
+	} while (list != NULL);
+	return 0;
+}
+
+int returnMinPtr(struct node* list, int* min, struct node** ptr)
+{
+	if (list == NULL) return 1; // list is empty.
+
+	// initialize results with first node.
+	*min = list->data;
+	*ptr = list;
+
+	do {
+		if (*min > list->data)
+		{
+			*min = list->data;
+			*ptr = list;
+		}
+		list = list->next;
+	} while (list != NULL);
+	return 0;
+}
+
+int returnMaxPos(struct node* list, int* max, int* pos)
+{
+	if (list == NULL) return 1; // list is empty.
+
+	// iniitialize results with first node.
+	*max = list->data;
+	*pos = 0;
+
+	list = list->next; // increment list.
+	int tempPos = 1;
+	do {
+		if (*max < list->data)
+		{
+			*max = list->data;
+			*pos = tempPos;
+		}
+		++tempPos;
+		list = list->next;
+	} while (list != NULL);
+	return 0;
+}
+
+int returnMaxPtr(struct node* list, int* max, struct node** ptr)
+{
+	if (list == NULL) return 1; // list is empty.
+
+	// initialize results with first node.
+	*max = list->data;
+	*ptr = list;
+
+	do {
+		if (*max < list->data)
+		{
+			*max = list->data;
+			*ptr = list;
+		}
+		list = list->next;
+	} while (list != NULL);
+	return 0;
 }
 
 int clear(struct node** list)

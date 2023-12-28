@@ -1,6 +1,9 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.5
+- Added deletePos, returnPosPtr, returnMinPos, returnMinPtr, returnMaxPos, and returnMaxPtr functions.
+
 v0.0.4
 - Updated isEmpty, size functions.
 - Added updatePosData, returnDataPos, and returnDataPtr functions.
