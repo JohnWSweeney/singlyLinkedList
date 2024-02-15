@@ -3,7 +3,7 @@
 
 int main()
 {
-	printf("singlyLinkedList v0.0.6\n\n");
+	printf("singlyLinkedList v0.0.7\n\n");
 	int result = 0;
 	int nodeCount = 0;
 	int data = 0;
@@ -26,9 +26,8 @@ int main()
 		printf("List is empty.\n\n");
 	}
 	/// test code here: ////////////////////////////////////////
-	position = 0;
-	result = movePosFront(&list, position);
-	printf("Result: %d\n", result);
+	
+	printf("Result: %d\n\n", result);
 	////////////////////////////////////////////////////////////
 	result = size(list, &nodeCount);
 	if (result == 0)

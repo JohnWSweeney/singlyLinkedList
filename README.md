@@ -1,6 +1,9 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.7
+- Added addPos, deleteAfterPos, returnFrontData, returnBackData, returnTailPos, and returnTailPtr functions.
+
 v0.0.6
 - Updated deleteFront and deleteBack functions.
 - Added movePosFront function.
