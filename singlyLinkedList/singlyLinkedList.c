@@ -448,6 +448,92 @@ int movePosFront(struct node** list, int pos)
 	return -1;
 }
 
+int movePosBack(struct node** list, int pos)
+{
+	if (*list == NULL) return 1; // list is empty.
+
+	struct node* head = *list;
+	struct node* prev = NULL;
+	int tempPos = 0;
+
+	while (*list != NULL)
+	{
+		struct node* curr = *list;
+		if (pos == tempPos) // found pos node in list.
+		{
+			if (curr->next == NULL) // if pos is last node.
+			{
+				*list = head; // no action needed, reset list.
+				return 0;
+			}
+			
+			struct node* tail = curr;
+			if (curr == head) // if pos is first node.
+			{
+				head = head->next;
+			}
+			else // if pos is b/w first/last nodes.
+			{
+				prev->next = curr->next;
+			}
+			while (curr->next != NULL) // find last node.
+			{
+				curr = curr->next;
+			}
+			curr->next = tail;
+			tail->next = NULL;
+			*list = head;
+			return 0;
+		}
+		prev = curr;
+		*list = curr->next;
+		++tempPos;
+	}
+	*list = head; // positin not in list, reset list.
+	return -1;
+}
+
+int movePosUp(struct node** list, int pos)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (pos == 0) return -2; // pos is first node, no action needed.
+
+	struct node* head = *list;
+	struct node* before = NULL; // node before prev node.
+	struct node* prev = head; // node before current node.
+	struct node* curr = NULL; // current node.
+	struct node* after = NULL; // node after current node.
+	*list = head->next; // skip head node.
+	int tempPos = 1;
+	
+	while (*list != NULL)
+	{
+		curr = *list;
+		if (pos == tempPos) // found pos node in list.
+		{
+			after = curr->next;
+			if(before != NULL)
+			{
+				before->next = curr;
+			}
+			curr->next = prev;
+			prev->next = after;
+			if (prev == head)
+			{
+				head = curr;
+			}
+			*list = head;
+			return 0;
+		}
+		before = prev;
+		prev = curr;
+		*list = curr->next;
+		++tempPos;
+	}
+	*list = head; // pos not in list, reset list.
+	return -1;
+}
+
 int clear(struct node** list)
 {
 	if (*list == NULL) return 1; // list is already empty.
@@ -492,5 +578,24 @@ int print(struct node* list)
 		list = list->next;
 	} while (list != NULL);
 	printf("\n");
+	return 0;
+}
+
+int reverse(struct node** list)
+{
+	if (*list == NULL) return 1; // list is empty.
+
+	struct node* head = *list;
+	*list = head->next;
+	head->next = NULL;
+
+	while(*list != NULL)
+	{
+		struct node* curr = *list;
+		*list = curr->next;
+		curr->next = head;
+		head = curr;
+	}
+	*list = head;
 	return 0;
 }

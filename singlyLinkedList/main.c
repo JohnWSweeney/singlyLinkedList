@@ -3,7 +3,7 @@
 
 int main()
 {
-	printf("singlyLinkedList v0.0.7\n\n");
+	printf("singlyLinkedList v0.0.8\n\n");
 	int result = 0;
 	int nodeCount = 0;
 	int data = 0;

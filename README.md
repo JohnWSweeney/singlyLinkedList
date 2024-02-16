@@ -1,6 +1,9 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.8
+- Added movePosBack, movePosUp, and reverse functions.
+
 v0.0.7
 - Added addPos, deleteAfterPos, returnFrontData, returnBackData, returnTailPos, and returnTailPtr functions.
 
