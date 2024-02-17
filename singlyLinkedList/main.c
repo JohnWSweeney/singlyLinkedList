@@ -3,7 +3,7 @@
 
 int main()
 {
-	printf("singlyLinkedList v0.0.8\n\n");
+	printf("singlyLinkedList v0.0.9\n\n");
 	int result = 0;
 	int nodeCount = 0;
 	int data = 0;
@@ -26,7 +26,13 @@ int main()
 		printf("List is empty.\n\n");
 	}
 	/// test code here: ////////////////////////////////////////
-	
+	position = 7;
+	result = returnPosPtr(list, position, &ptr);
+	printf("Position %d pointer: %p\n", position, ptr);
+	printf("Result: %d\n\n", result);
+	////////////////////////////////////////////////////////////
+	data = 666;
+	result = updatePtrData(list, ptr, data);
 	printf("Result: %d\n\n", result);
 	////////////////////////////////////////////////////////////
 	result = size(list, &nodeCount);

@@ -243,6 +243,24 @@ int returnPosPtr(struct node* list, int pos, struct node** ptr)
 	return -1;
 }
 
+int returnPtrPos(struct node* list, struct node* ptr, int* pos)
+{
+	if (list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	*pos = 0;
+	while (list != NULL)
+	{
+		if (ptr == list)
+		{
+			return 0;
+		}
+		list = list->next;
+		++*pos;
+	}
+	return -1; // ptr not in list.
+}
+
 int returnFrontData(struct node** list, int* data)
 {
 	if (*list == NULL) return 1; // list is empty.
@@ -263,6 +281,41 @@ int returnBackData(struct node* list, int* data)
 	return 0;
 }
 
+int returnPosData(struct node* list, int pos, int* data)
+{
+	if (list == NULL) return 1; // list is empty.
+
+	int tempPos = 0;
+	while (list != NULL)
+	{
+		if (pos == tempPos)
+		{
+			*data = list->data;
+			return 0;
+		}
+		list = list->next;
+		++tempPos;
+	}
+	return -1; // pos not in list.
+}
+
+int returnPtrData(struct node* list, struct node* ptr, int* data)
+{
+	if (list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	while (list != NULL)
+	{
+		if (list == ptr)
+		{
+			*data = list->data;
+			return 0;
+		}
+		list = list->next;
+	}
+	return -1; // ptr not in list.
+}
+
 int updatePosData(struct node* list, int pos, int data)
 {
 	if (list == NULL) return 1;
@@ -278,6 +331,23 @@ int updatePosData(struct node* list, int pos, int data)
 		list = list->next;
 	} while (list != NULL);
 	return -1;
+}
+
+int updatePtrData(struct node* list, struct node* ptr, int data)
+{
+	if (list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	while (list != NULL)
+	{
+		if (ptr == list)
+		{
+			list->data = data;
+			return 0;
+		}
+		list = list->next;
+	}
+	return -1; // ptr not in list.
 }
 
 int returnDataPos(struct node* list, int data, int* pos)
@@ -527,6 +597,51 @@ int movePosUp(struct node** list, int pos)
 		}
 		before = prev;
 		prev = curr;
+		*list = curr->next;
+		++tempPos;
+	}
+	*list = head; // pos not in list, reset list.
+	return -1;
+}
+
+int movePosDown(struct node** list, int pos)
+{
+	if (*list == NULL) return 1; // list is empty.
+
+	struct node* head = *list;
+	struct node* before = NULL; // node before current node, swapped nodes.
+	struct node* curr = NULL; // current node.
+	struct node* next = NULL; // node after current node.
+	struct node* after = NULL; // node after swapped nodes.
+	int tempPos = 0;
+	while (*list != NULL)
+	{
+		curr = *list;
+		if (pos == tempPos)
+		{
+			next = curr->next;
+			//after = next->next;
+			if (curr->next == NULL) // pos is last node, no action required.
+			{
+				*list = head;
+				return -1;
+			}
+			if (before == NULL) // curr follows head node.
+			{
+				curr->next = next->next;
+				next->next = curr;
+				*list = next;
+				return 0;
+			}
+			// all other cases.
+			before->next = next;
+			curr->next = next->next;
+			next->next = curr;
+			*list = head;
+			return 0;
+
+		}
+		before = curr;
 		*list = curr->next;
 		++tempPos;
 	}
