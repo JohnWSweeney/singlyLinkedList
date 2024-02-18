@@ -1,5 +1,6 @@
 #pragma once
 #include "singlyLinkedList.h"
+#include "random.h"
 // sweeney's hand-rolled singly linked list.
 //
 // pos = "position".
@@ -954,6 +955,32 @@ int swap(struct node** list, struct node* ptr1, struct node* ptr2)
 		*list = head; // reset list.
 		return -1;
 	}
+}
+
+int shuffle(struct node** list)
+{
+	if (*list == NULL) return 1; // list is empty.
+
+	int nodeCount = 0;
+	size(*list, &nodeCount);
+
+	int position1 = 0; 
+	int position2 = 0;
+	struct node* ptr1 = NULL;
+	struct node* ptr2 = NULL;
+	int temp = 0; // dummy counter.
+	seedRand();
+	do {
+		position1 = getRandNum(0, nodeCount - 1); // get random list position.
+		do {
+			position2 = getRandNum(0, nodeCount - 1);
+		} while (position1 == position2); // get second, different random list position.
+		returnPosPtr(*list, position1, &ptr1); // get pointer to first position.
+		returnPosPtr(*list, position2, &ptr2); // get pointer to second position.
+		swap(list, ptr1, ptr2); // swap list positions.
+		++temp;
+	} while (temp < pow(nodeCount, 2)); // repeat nodeCount^2 times.
+	return 0;
 }
 
 int bubbleSort(struct node** list, int ascending)

@@ -1,6 +1,10 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.12
+- Added random number generator functions (random.h/c).
+- Added shuffle function.
+
 v0.0.11
 - Added movePtrUp, movePtrDown, and swap functions.
 
