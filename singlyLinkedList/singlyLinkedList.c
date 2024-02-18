@@ -518,6 +518,33 @@ int movePosFront(struct node** list, int pos)
 	return -1;
 }
 
+int movePtrFront(struct node** list, struct node* ptr)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	struct node* head = *list;
+	if (ptr == head) return -2; // no action required.
+
+	struct node* before = NULL; // node before current node.
+	struct node* curr = NULL; // current node.
+	while (*list != NULL)
+	{
+		curr = *list;
+		if (ptr == curr)
+		{
+			before->next = curr->next;
+			curr->next = head;
+			*list = curr;
+			return 0;
+		}
+		before = curr;
+		*list = curr->next;
+	}
+	*list = head; // ptr not in list, reset list.
+	return -1;
+}
+
 int movePosBack(struct node** list, int pos)
 {
 	if (*list == NULL) return 1; // list is empty.
@@ -560,6 +587,51 @@ int movePosBack(struct node** list, int pos)
 		++tempPos;
 	}
 	*list = head; // positin not in list, reset list.
+	return -1;
+}
+
+int movePtrBack(struct node** list, struct node* ptr)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	struct node* head = *list;
+	struct node* before = NULL;
+	struct node* curr = NULL;
+	while (*list != NULL)
+	{
+		curr = *list;
+		if (curr == ptr) // found ptr in list.
+		{
+			if (curr->next == NULL) // ptr is last node.
+			{
+				*list = head; // no action required, reset list.
+				return -2;
+			}
+
+			struct node* tail = curr; // create tail node variable.
+			while (tail->next != NULL) // find last node in list.
+			{
+				tail = *list;
+				*list = tail->next;
+			}
+			if (ptr == head) // if ptr is first node.
+			{
+				head = head->next;
+			}
+			else // all other cases.
+			{
+				before->next = curr->next;
+			}
+			tail->next = ptr;
+			ptr->next = NULL;
+			*list = head;
+			return 0;
+		}
+		before = curr;
+		*list = curr->next;
+	}
+	*list = head; // ptr not in list, reset list.
 	return -1;
 }
 
@@ -712,5 +784,80 @@ int reverse(struct node** list)
 		head = curr;
 	}
 	*list = head;
+	return 0;
+}
+
+int bubbleSort(struct node** list, int ascending)
+{
+	if (*list == NULL) return 1; // list is empty.
+
+	struct node* head = *list;
+	struct node* before = NULL;
+	struct node* curr = *list;
+	struct node* after = NULL;
+	int swaps = 0;
+	int swapCount = 0;
+	// sweep list, sorting adjacent nodes according to ascending, until no sorts occur in a sweep.
+	do {
+		swaps = 0; 
+		while (curr->next != NULL)
+		{
+			after = curr->next;
+			if (ascending != 0) // sort ascending.
+			{
+				if (curr->data > after->data)
+				{
+					if (before == NULL) // curr is head node.
+					{
+						head = after; // update head node.
+					}
+					else // curr is not head node.
+					{
+						before->next = after;
+					}
+					curr->next = after->next;
+					after->next = curr;
+					before = after;
+					*list = curr;
+					++swaps;
+				}
+				else
+				{
+					before = curr;
+					curr = curr->next;
+				}
+			}
+			else // sort descending.
+			{
+				if (curr->data < after->data)
+				{
+					if (before == NULL) // curr is head node.
+					{
+						head = after; // update head node.
+					}
+					else // curr is not head node.
+					{
+						before->next = after;
+					}
+					curr->next = after->next;
+					after->next = curr;
+					before = after;
+					*list = curr;
+					++swaps;
+				}
+				else
+				{
+					before = curr;
+					curr = curr->next;
+				}
+			}
+		}
+		swapCount += swaps;
+		// reset list, variables.
+		before = NULL;
+		*list = head;
+		curr = *list;	
+	} while (swaps != 0);
+	printf("swapCount: %d\n", swapCount);
 	return 0;
 }

@@ -1,6 +1,9 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.10
+- Added movePtrFront, movePtrBack, and bubbleSort functions.
+
 v0.0.9
 - Added returnPtrPos, returnPosData, returnPtrData, updatePtrData, and movePosDown functions.
 
