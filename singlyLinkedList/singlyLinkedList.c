@@ -237,8 +237,8 @@ int returnPosPtr(struct node* list, int pos, struct node** ptr)
 			*ptr = list;
 			return 0;
 		}
-		++tempPos;
 		list = list->next;
+		++tempPos;
 	} while (list != NULL);
 	return -1;
 }
@@ -676,6 +676,45 @@ int movePosUp(struct node** list, int pos)
 	return -1;
 }
 
+int movePtrUp(struct node** list, struct node* ptr)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	struct node* head = *list;
+	if (ptr == head) return -2; // no action needed.
+	*list = head->next; // skip first node.
+
+	struct node* before = NULL;
+	struct node* prev = head;
+	struct node* curr = NULL;
+
+	while (*list != NULL)
+	{
+		curr = *list;
+		if (ptr == curr)
+		{
+			if (before != NULL)
+			{
+				before->next = curr;
+			}
+			prev->next = curr->next;
+			curr->next = prev;
+			if (prev == head)
+			{
+				head = curr;
+			}
+			*list = head;
+			return 0;
+		}
+		before = prev;
+		prev = curr;
+		*list = curr->next;
+	}
+	*list = head; // ptr not in list, reset list.
+	return -1;
+}
+
 int movePosDown(struct node** list, int pos)
 {
 	if (*list == NULL) return 1; // list is empty.
@@ -718,6 +757,47 @@ int movePosDown(struct node** list, int pos)
 		++tempPos;
 	}
 	*list = head; // pos not in list, reset list.
+	return -1;
+}
+
+int movePtrDown(struct node** list, struct node* ptr)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	struct node* head = *list;
+	struct node* before = NULL;
+	struct node* curr = NULL;
+	struct node* after = NULL;
+
+	while (*list != NULL)
+	{
+		curr = *list;
+		if (ptr == curr)
+		{
+			if (curr->next == NULL) // curr is last node.
+			{
+				*list = head; // reset list, no action needed.
+				return -2;
+			}
+			after = curr->next;
+			if (before != NULL)
+			{
+				before->next = after;
+			}
+			curr->next = after->next;
+			after->next = curr;
+			if (curr == head)
+			{
+				head = after;
+			}
+			*list = head;
+			return 0;
+		}
+		before = curr;
+		*list = curr->next;
+	}
+	*list = head; // ptr not in list, reset list.
 	return -1;
 }
 
@@ -785,6 +865,95 @@ int reverse(struct node** list)
 	}
 	*list = head;
 	return 0;
+}
+
+int swap(struct node** list, struct node* ptr1, struct node* ptr2)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (ptr1 == NULL || ptr2 == NULL) return 2; // ptr is null.
+	if (ptr1 == ptr2) return -2; // no action needed.
+
+	struct node* head = *list;
+
+	struct node* before = NULL; // node before current node in sweep.
+	struct node* curr = *list; // current node in sweep.
+	struct node* before1 = NULL; // node before ptr1.
+	struct node* after1 = NULL; // node after ptr1.
+	struct node* before2 = NULL; // node before ptr2.
+	struct node* after2 = NULL; // node after ptr2.
+	int foundPtr1 = 0; // flag indicating ptr1 found in list.
+	int foundPtr2 = 0; // flag indicating ptr2 found in list.
+
+	while (*list != NULL) // find ptr1/ptr2 in list.
+	{
+		curr = *list;
+		if (curr == ptr1) // found ptr1 in list.
+		{
+			foundPtr1 = 1;
+			before1 = before;
+			after1 = curr->next;
+		}
+		if (curr == ptr2) // found ptr2 in list.
+		{
+			foundPtr2 = 1;
+			before2 = before;
+			after2 = curr->next;
+		}
+		before = curr;
+		*list = curr->next;
+	}
+
+	if (foundPtr1 > 0 && foundPtr2 > 0) // ptr1 and ptr2 found in list.
+	{
+		if (ptr1->next == ptr2) // ptr2 follows ptr1 in list.
+		{
+			if (before1 != NULL)
+			{
+				before1->next = ptr2;
+			}
+			ptr2->next = ptr1;
+			ptr1->next = after2;
+		}
+		else if (ptr2->next == ptr1) // ptr1 follows ptr2 in list.
+		{
+			if (before2 != NULL)
+			{
+				before2->next = ptr1;
+			}
+			ptr1->next = ptr2;
+			ptr2->next = after1;
+		}
+		else
+		{
+			if (before1 != NULL)
+			{
+				before1->next = ptr2;
+			}
+			ptr2->next = after1;
+			if (before2 != NULL)
+			{
+				before2->next = ptr1;
+			}
+			ptr1->next = after2;
+		}
+
+		// verify head node.
+		if (before1 == NULL) // ptr 1 is original head.
+		{
+			head = ptr2;
+		}
+		else if (before2 == NULL) // ptr 2 is original head.
+		{
+			head = ptr1;
+		}
+		*list = head;
+		return 0;
+	}
+	else // ptr1 and/or ptr2 not found in list.
+	{
+		*list = head; // reset list.
+		return -1;
+	}
 }
 
 int bubbleSort(struct node** list, int ascending)
