@@ -199,6 +199,48 @@ int deletePtr(struct node** list, struct node* ptr)
 	return -1;
 }
 
+int deleteBeforePos(struct node** list, int pos)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (pos == 0) return -2; // no action needed.
+
+	struct node* head = *list; // original head node.
+	struct node* curr = NULL; // current node in sweep.
+	struct node* prev = head; // previous node in sweep, initialized to head.
+	struct node* newHead = NULL; // new head node at pos.
+
+	*list = head->next; // skip head node, invalid option.
+	int tempPos = 1;
+	while (*list != NULL) // find pos in list.
+	{
+		curr = *list;
+		if (pos == tempPos)
+		{
+			newHead = curr;
+			prev->next = NULL;
+			break;
+		}
+		else if (curr->next == NULL)
+		{
+			*list = head; // pos not in list, reset list.
+			return -1;
+		}
+		prev = curr;
+		*list = curr->next;
+		++tempPos;
+	}
+
+	curr = head; // restart list sweep with original head node.
+	while (curr != NULL) // delete nodes in original list up to newHead node.
+	{
+		struct node* dummy = curr;
+		curr = curr->next;
+		free(dummy);
+	}
+	*list = newHead; // reset list to newHead.
+	return 0;
+}
+
 int deleteAfterPos(struct node** list, int pos)
 {
 	if (*list == NULL) return 1; // list is empty.
@@ -225,6 +267,38 @@ int deleteAfterPos(struct node** list, int pos)
 	}
 	*list = head;
 	return -1; // position not in list, reset list.
+}
+
+int deleteAfterPtr(struct node** list, struct node* ptr)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	struct node* head = *list;
+	while (*list != NULL)
+	{
+		struct node* curr = *list;
+		if (curr == ptr)
+		{
+			if (curr->next == NULL)
+			{
+				*list = head; // reset list.
+				return -2;  // no action needed.
+			}
+
+			while (curr->next != NULL)
+			{
+				struct node* dummy = curr->next;
+				curr->next = dummy->next;
+				free(dummy);
+			}
+			*list = head;
+			return 0;
+		}
+		*list = curr->next;
+	}
+	*list = head; // ptr not in list, reset list.
+	return -1;
 }
 
 int returnPosPtr(struct node* list, int pos, struct node** ptr)

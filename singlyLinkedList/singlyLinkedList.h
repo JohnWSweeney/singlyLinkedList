@@ -1,6 +1,5 @@
 #pragma once
 #include <stdio.h>
-#include <stdlib.h>
 #include "nodes.h"
 // sweeney's hand-rolled singly linked list.
 //
@@ -23,7 +22,9 @@ int deleteFront(struct node** list);
 int deleteBack(struct node** list);
 int deletePos(struct node** list, int pos);
 int deletePtr(struct node** list, struct node* ptr);
+int deleteBeforePos(struct node** list, int pos);
 int deleteAfterPos(struct node** list, int pos);
+int deleteAfterPtr(struct node** list, struct node* ptr);
 int returnPosPtr(struct node* list, int pos, struct node** ptr);
 int returnPtrPos(struct node* list, struct node* ptr, int* pos);
 int returnFrontData(struct node** list, int* data);

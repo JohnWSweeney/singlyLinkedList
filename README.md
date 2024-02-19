@@ -1,6 +1,9 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.13
+- Added deleteBeforePos and deleteAfterPtr functions.
+
 v0.0.12
 - Added random number generator functions (random.h/c).
 - Added shuffle function.

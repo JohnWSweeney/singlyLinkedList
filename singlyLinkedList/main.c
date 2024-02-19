@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include "singlyLinkedList.h"
 
 int main()
 {
-	printf("singlyLinkedList v0.0.12\n\n");
+	printf("singlyLinkedList v0.0.13\n\n");
 	int result = 0;
 	int nodeCount = 0;
 	int data = 0;
