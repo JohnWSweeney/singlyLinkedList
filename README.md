@@ -1,6 +1,10 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.14
+- Added deleteBeforePtr function.
+- Updated deletePtr function to nullify ptr variable after free.
+
 v0.0.13
 - Added deleteBeforePos and deleteAfterPtr functions.
 

@@ -179,6 +179,7 @@ int deletePtr(struct node** list, struct node* ptr)
 	{
 		*list = head->next;
 		free(head);
+		ptr = NULL;
 		return 0;
 	}
 
@@ -189,6 +190,7 @@ int deletePtr(struct node** list, struct node* ptr)
 		{
 			prev->next = curr->next;
 			free(curr);
+			ptr = NULL;
 			*list = head;
 			return 0;
 		}
@@ -239,6 +241,48 @@ int deleteBeforePos(struct node** list, int pos)
 	}
 	*list = newHead; // reset list to newHead.
 	return 0;
+}
+
+int deleteBeforePtr(struct node** list, struct node* ptr)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (ptr == NULL) return 2; // ptr is null.
+
+	struct node* head = *list; // original head node.
+	if (ptr == head) return 2; // no action needed.
+	*list = head->next; // skip head node.
+
+	struct node* curr = NULL; // current node in list sweep.
+	struct node* prev = head; // previous node in list sweep, initilized to head.
+	struct node* newHead = NULL; // new head node.
+
+	while (*list != NULL) // find ptr in list.
+	{
+		curr = *list;
+		//if (curr->next == NULL) // end of list, ptr not in list.
+		//{
+		//	*list = head; // reset list.
+		//	return -1;
+		//}
+		if (curr == ptr) // found ptr in list.
+		{
+			newHead = curr;
+			prev->next = NULL;
+			curr = head; // restart list from original head node.
+			while (curr != NULL) // delete nodes up to new head node.
+			{
+				struct node* dummy = curr;
+				curr = curr->next;
+				free(dummy);
+			}
+			*list = newHead; // reset list at new head node.
+			return 0;
+		}
+		prev = curr;
+		*list = curr->next;
+	}
+	*list = head; // ptr not in list, reset list.
+	return -1;
 }
 
 int deleteAfterPos(struct node** list, int pos)
