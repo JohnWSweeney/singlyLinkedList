@@ -55,6 +55,7 @@ int isEmpty(struct node* list);
 int size(struct node* list, int *nodeCount);
 int print(struct node* list);
 int reverse(struct node** list);
+int swapPos(struct node** list, int pos1, int pos2);
 int swap(struct node** list, struct node* ptr1, struct node* ptr2);
 int shuffle(struct node** list);
 int bubbleSort(struct node** list, int ascending);

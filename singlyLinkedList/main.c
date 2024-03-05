@@ -6,7 +6,8 @@ int main()
 	int result = 0;
 	int nodeCount = 0;
 	int data = 0;
-	int position = 0;
+	int position1 = 0;
+	int position2 = 0;
 	struct node* list = NULL;
 	struct node* ptr1 = NULL;
 	struct node* ptr2 = NULL;
@@ -26,7 +27,9 @@ int main()
 		printf("List is empty.\n\n");
 	}
 	/// test code here: ////////////////////////////////////////
-	
+	position1 = 2;
+	position2 = 6;
+	result = swapPos(&list, position1, position2);
 	printf("Result: %d\n\n", result);
 	////////////////////////////////////////////////////////////
 	result = size(list, &nodeCount);

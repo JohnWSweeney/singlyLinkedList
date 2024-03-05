@@ -986,6 +986,48 @@ int reverse(struct node** list)
 	return 0;
 }
 
+int swapPos(struct node** list, int pos1, int pos2)
+{
+	if (*list == NULL) return 1; // list is empty.
+	if (pos1 == pos2) return 2; // no action needed.
+
+	struct node* head = *list;
+	struct node* before = *list;
+	struct node* curr = NULL;
+	struct node* before1 = NULL;
+	struct node* pos1ptr = NULL;
+	struct node* after1 = NULL;
+	struct node* before2 = NULL;
+	struct node* pos2ptr = NULL;
+	struct node* after2 = NULL;
+	int tempPos = 0;
+	int foundPos1 = 0;
+	int foundPos2 = 0;
+	// find pos1 and pos2 in list.
+	while (*list != NULL)
+	{
+		curr = *list;
+		if (tempPos == pos1) // found pos1.
+		{
+			foundPos1 = 1;
+			pos1ptr = curr;
+			printf("pos1:\t%d\t%p\n", pos1ptr->data, pos1ptr);
+		}
+		if (tempPos == pos2) // found pos2.
+		{
+			foundPos2 = 1;
+			pos2ptr = curr;
+			printf("pos2:\t%d\t%p\n", pos2ptr->data, pos2ptr);
+		}
+		before = curr;
+		*list = curr->next;
+		++tempPos;
+	}
+
+	*list = head;
+	return 0;
+}
+
 int swap(struct node** list, struct node* ptr1, struct node* ptr2)
 {
 	if (*list == NULL) return 1; // list is empty.
