@@ -992,7 +992,7 @@ int swapPos(struct node** list, int pos1, int pos2)
 	if (pos1 == pos2) return 2; // no action needed.
 
 	struct node* head = *list;
-	struct node* before = *list;
+	struct node* before = NULL;
 	struct node* curr = NULL;
 	struct node* before1 = NULL;
 	struct node* pos1ptr = NULL;
@@ -1010,22 +1010,73 @@ int swapPos(struct node** list, int pos1, int pos2)
 		if (tempPos == pos1) // found pos1.
 		{
 			foundPos1 = 1;
+			before1 = before;
 			pos1ptr = curr;
+			after1 = curr->next;
 			printf("pos1:\t%d\t%p\n", pos1ptr->data, pos1ptr);
 		}
 		if (tempPos == pos2) // found pos2.
 		{
 			foundPos2 = 1;
+			before2 = before;
 			pos2ptr = curr;
+			after2 = curr->next;
 			printf("pos2:\t%d\t%p\n", pos2ptr->data, pos2ptr);
+		}
+		if (foundPos1 == 1 && foundPos2 == 1) // exit loop when both positions found.
+		{
+			break;
 		}
 		before = curr;
 		*list = curr->next;
 		++tempPos;
 	}
+	
+	if (foundPos1 == 1 && foundPos2 == 1)
+	{
 
-	*list = head;
-	return 0;
+		//if (pos1ptr->next == pos2ptr)
+		//{
+		//	pos2ptr->next = pos1ptr;
+		//	pos1ptr->next = after2;
+		//}
+		//else if (pos2ptr->next == pos1ptr)
+		//{
+		//	pos1ptr->next = pos2ptr;
+		//	pos2ptr->next = after1;
+		//}
+		//else
+		//{
+		//	pos1ptr->next = after2;
+		//	pos2ptr->next = after1;
+		//}
+
+		//if (pos1ptr == head)
+		//{
+		//	head = pos2ptr;
+		//	before2->next = pos1ptr;
+		//}
+		//else if (pos2ptr == head)
+		//{
+		//	head = pos1ptr;
+		//	before1->next = pos2ptr;
+		//}
+		//else
+		//{
+		//	before1->next = pos2ptr;
+		//	before2->next = pos1ptr;
+		//}
+
+		*list = head;
+		return 0;
+	}
+	else // pos1 and/or pos2 not in list.
+	{
+		*list = head;
+		return -1;
+	}
+
+	
 }
 
 int swap(struct node** list, struct node* ptr1, struct node* ptr2)

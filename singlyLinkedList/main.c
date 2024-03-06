@@ -27,8 +27,8 @@ int main()
 		printf("List is empty.\n\n");
 	}
 	/// test code here: ////////////////////////////////////////
-	position1 = 2;
-	position2 = 6;
+	position1 = 0;
+	position2 = 1;
 	result = swapPos(&list, position1, position2);
 	printf("Result: %d\n\n", result);
 	////////////////////////////////////////////////////////////
