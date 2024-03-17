@@ -992,94 +992,106 @@ int swapPos(struct node** list, int pos1, int pos2)
 	if (pos1 == pos2) return 2; // no action needed.
 
 	struct node* head = *list;
-	struct node* before = NULL;
-	struct node* curr = NULL;
-	struct node* before1 = NULL;
-	struct node* pos1ptr = NULL;
-	struct node* after1 = NULL;
-	struct node* before2 = NULL;
-	struct node* pos2ptr = NULL;
-	struct node* after2 = NULL;
-	int tempPos = 0;
-	int foundPos1 = 0;
+	struct node* before = NULL; // previous node in list sweep.
+	struct node* curr = NULL; // current node in list sweep.
+	struct node* beforePtr1 = NULL; // node before pos1 ptr.
+	struct node* ptr1 = NULL; // ptr to pos1.
+	struct node* afterPtr1 = NULL; // node after pos1 ptr.
+	struct node* beforePtr2 = NULL; // node before pos2 ptr.
+	struct node* ptr2 = NULL; // ptr to pos2.
+	struct node* afterPtr2 = NULL; // node after pos2 ptr.
+	int foundPos1 = 0; 
 	int foundPos2 = 0;
+	int tempPos = 0;
 	// find pos1 and pos2 in list.
 	while (*list != NULL)
 	{
-		curr = *list;
+		struct node* curr = *list;
 		if (tempPos == pos1) // found pos1.
 		{
 			foundPos1 = 1;
-			before1 = before;
-			pos1ptr = curr;
-			after1 = curr->next;
-			printf("pos1:\t%d\t%p\n", pos1ptr->data, pos1ptr);
+			ptr1 = curr;
+			beforePtr1 = before;
+			afterPtr1 = curr->next;
+			//printf("pPos1:\t%d\t%p\n", beforePtr1->data, beforePtr1);
+			//printf("pos1:\t%d\t%p\n\n", ptr1->data, ptr1);
 		}
 		if (tempPos == pos2) // found pos2.
 		{
 			foundPos2 = 1;
-			before2 = before;
-			pos2ptr = curr;
-			after2 = curr->next;
-			printf("pos2:\t%d\t%p\n", pos2ptr->data, pos2ptr);
+			ptr2 = curr;
+			beforePtr2 = before;
+			afterPtr2 = curr->next;
+			//printf("pPos2:\t%d\t%p\n", beforePtr2->data, beforePtr2);
+			//printf("pos2:\t%d\t%p\n\n", ptr2->data, ptr2);
 		}
-		if (foundPos1 == 1 && foundPos2 == 1) // exit loop when both positions found.
-		{
-			break;
-		}
+		if (foundPos1 == 1 && foundPos2 == 1) break; // exit sweep early if possible.
 		before = curr;
 		*list = curr->next;
 		++tempPos;
 	}
-	
+
 	if (foundPos1 == 1 && foundPos2 == 1)
 	{
-
-		//if (pos1ptr->next == pos2ptr)
-		//{
-		//	pos2ptr->next = pos1ptr;
-		//	pos1ptr->next = after2;
-		//}
-		//else if (pos2ptr->next == pos1ptr)
-		//{
-		//	pos1ptr->next = pos2ptr;
-		//	pos2ptr->next = after1;
-		//}
-		//else
-		//{
-		//	pos1ptr->next = after2;
-		//	pos2ptr->next = after1;
-		//}
-
-		//if (pos1ptr == head)
-		//{
-		//	head = pos2ptr;
-		//	before2->next = pos1ptr;
-		//}
-		//else if (pos2ptr == head)
-		//{
-		//	head = pos1ptr;
-		//	before1->next = pos2ptr;
-		//}
-		//else
-		//{
-		//	before1->next = pos2ptr;
-		//	before2->next = pos1ptr;
-		//}
+		if (ptr1->next == ptr2)
+		{
+			if (beforePtr1 != NULL)
+			{
+				beforePtr1->next = ptr2;
+			}
+			else
+			{
+				head = ptr2;
+			}
+			ptr2->next = ptr1;
+			ptr1->next = afterPtr2;
+		}
+		else if (ptr2->next == ptr1)
+		{
+			if (beforePtr2 != NULL)
+			{
+				beforePtr2->next = ptr1;
+			}
+			else
+			{
+				head = ptr1;
+			}
+			ptr1->next = ptr2;
+			ptr2->next = afterPtr1;
+		}
+		else
+		{
+			if (beforePtr1 != NULL)
+			{
+				beforePtr1->next = ptr2;
+			}
+			else
+			{
+				head = ptr2;
+			}
+			ptr2->next = afterPtr1;
+			if (beforePtr2 != NULL)
+			{
+				beforePtr2->next = ptr1;
+			}
+			else
+			{
+				head = ptr1;
+			}
+			ptr1->next = afterPtr2;
+		}
 
 		*list = head;
 		return 0;
 	}
-	else // pos1 and/or pos2 not in list.
+	else
 	{
-		*list = head;
+		*list = head; // pos1 and/or pos2 not in list, reset list.
 		return -1;
 	}
-
-	
 }
 
-int swap(struct node** list, struct node* ptr1, struct node* ptr2)
+int swapPtr(struct node** list, struct node* ptr1, struct node* ptr2)
 {
 	if (*list == NULL) return 1; // list is empty.
 	if (ptr1 == NULL || ptr2 == NULL) return 2; // ptr is null.
@@ -1188,7 +1200,7 @@ int shuffle(struct node** list)
 		} while (position1 == position2); // get second, different random list position.
 		returnPosPtr(*list, position1, &ptr1); // get pointer to first position.
 		returnPosPtr(*list, position2, &ptr2); // get pointer to second position.
-		swap(list, ptr1, ptr2); // swap list positions.
+		swapPtr(list, ptr1, ptr2); // swap list positions.
 		++temp;
 	} while (temp < pow(nodeCount, 2)); // repeat nodeCount^2 times.
 	return 0;

@@ -2,7 +2,7 @@
 
 int main()
 {
-	printf("singlyLinkedList v0.0.14\n\n");
+	printf("singlyLinkedList v0.0.15\n\n");
 	int result = 0;
 	int nodeCount = 0;
 	int data = 0;
@@ -27,9 +27,7 @@ int main()
 		printf("List is empty.\n\n");
 	}
 	/// test code here: ////////////////////////////////////////
-	position1 = 0;
-	position2 = 1;
-	result = swapPos(&list, position1, position2);
+	
 	printf("Result: %d\n\n", result);
 	////////////////////////////////////////////////////////////
 	result = size(list, &nodeCount);

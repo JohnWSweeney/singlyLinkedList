@@ -1,6 +1,9 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.15
+- Added swapPos function, renamed swap function to swapPtr.
+
 v0.0.14
 - Added deleteBeforePtr function.
 - Updated deletePtr function to nullify ptr variable after free.
