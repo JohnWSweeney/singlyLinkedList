@@ -2,13 +2,14 @@
 
 int main()
 {
-	printf("singlyLinkedList v0.0.15\n\n");
+	printf("singlyLinkedList v0.0.16\n\n");
 	int result = 0;
 	int nodeCount = 0;
 	int data = 0;
 	int position1 = 0;
 	int position2 = 0;
 	struct node* list = NULL;
+	struct node* tsil = NULL;
 	struct node* ptr1 = NULL;
 	struct node* ptr2 = NULL;
 
@@ -21,10 +22,6 @@ int main()
 	{
 		printf("Node count: %d\n", nodeCount);
 		print(list);
-	}
-	else
-	{
-		printf("List is empty.\n\n");
 	}
 	/// test code here: ////////////////////////////////////////
 	

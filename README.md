@@ -1,6 +1,9 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.16
+- Added appendList function.
+
 v0.0.15
 - Added swapPos function, renamed swap function to swapPtr.
 

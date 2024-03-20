@@ -1206,6 +1206,28 @@ int shuffle(struct node** list)
 	return 0;
 }
 
+int appendList(struct node** listA, struct node** listB)
+{
+	if (*listA == NULL || *listB == NULL) return 1; // list A and/or B empty.
+	if (*listA == *listB) return -2; // no action needed.
+
+	struct node* headA = *listA;
+	struct node* headB = *listB;
+	// find last node in listA, connect to listB head node.
+	while (*listA != NULL)
+	{
+		struct node* curr = *listA;
+		if (curr->next == NULL) // found list node in listA.
+		{
+			curr->next = headB;
+			*listA = headA;
+			*listB = NULL;
+			return 0;
+		}
+		*listA = curr->next;
+	}
+}
+
 int bubbleSort(struct node** list, int ascending)
 {
 	if (*list == NULL) return 1; // list is empty.
