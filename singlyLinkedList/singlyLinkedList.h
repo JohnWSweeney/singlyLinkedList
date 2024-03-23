@@ -14,7 +14,7 @@
 // -1	pos/ptr not in list.
 // -2	no action needed.
 
-struct node* init(int data);
+void init(struct node** list, int data);
 int addFront(struct node** list, int data);
 int addBack(struct node** list, int data);
 int addPos(struct node** list, int pos, int data);

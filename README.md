@@ -1,6 +1,9 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.17
+- Updated init, addFront, addBack, and addPos functions with malloc error checks.
+
 v0.0.16
 - Added appendList function.
 

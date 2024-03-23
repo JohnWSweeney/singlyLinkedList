@@ -2,7 +2,7 @@
 
 int main()
 {
-	printf("singlyLinkedList v0.0.16\n\n");
+	printf("singlyLinkedList v0.0.17\n\n");
 	int result = 0;
 	int nodeCount = 0;
 	int data = 0;

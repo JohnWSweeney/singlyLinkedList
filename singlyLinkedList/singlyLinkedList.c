@@ -14,35 +14,51 @@
 // -1	pos/ptr not in list.
 // -2	no action needed.
 
-struct node* init(int data)
+void init(struct node** list, int data)
 {
-	struct node *newNode = malloc(sizeof(struct node));
-	newNode->data = data;
-	newNode->next = NULL;
-	return newNode;
+	struct node* newNode = malloc(sizeof(struct node));
+	if (newNode != NULL)
+	{
+		newNode->data = data;
+		newNode->next = NULL;
+		*list = newNode;
+	}
+	else
+	{
+		printf("init: Memory allocation failed.\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 int addFront(struct node** list, int data)
 {
 	if (*list == NULL)
 	{
-		*list = init(data);
+		init(list, data);
 		return 0;
 	}
 
 	struct node* head = *list;
 	struct node* newHead = malloc(sizeof(struct node));
-	newHead->data = data;
-	newHead->next = head;
-	*list = newHead;
-	return 0;
+	if (newHead != NULL)
+	{
+		newHead->data = data;
+		newHead->next = head;
+		*list = newHead;
+		return 0;
+	}
+	else
+	{
+		printf("addFront: Memory allocation failed.\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 int addBack(struct node** list, int data)
 {
 	if (*list == NULL)
 	{
-		*list = init(data);
+		init(list, data);
 		return 0;
 	}
 
@@ -52,11 +68,19 @@ int addBack(struct node** list, int data)
 		if (curr->next == NULL)
 		{
 			struct node* newNode = malloc(sizeof(struct node));
-			newNode->data = data;
-			newNode->next = NULL;
-			curr->next = newNode;
-			*list = head;
-			return 0;
+			if (newNode != NULL)
+			{
+				newNode->data = data;
+				newNode->next = NULL;
+				curr->next = newNode;
+				*list = head;
+				return 0;
+			}
+			else
+			{
+				printf("addBack: Memory allocation failed.\n");
+				exit(EXIT_FAILURE);
+			}
 		}
 		*list = curr->next;
 	} while (*list != NULL);
@@ -69,29 +93,44 @@ int addPos(struct node** list, int pos, int data)
 	struct node* head = *list;
 	if (pos == 0) // add new head node.
 	{
-		struct node* newNode = malloc(sizeof(struct node));
-		newNode->data = data;
-		newNode->next = head;
-		*list = newNode;
-		return 0;
+		struct node* newHead = malloc(sizeof(struct node));
+		if (newHead != NULL)
+		{
+			newHead->data = data;
+			newHead->next = head;
+			*list = newHead;
+			return 0;
+		}
+		else
+		{
+			printf("addPos: Memory allocation failed.\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 
-	// add node after head.
 	struct node* prev = head;
 	*list = head->next;
 	int tempPos = 1;
-
+	// find pos in list.
 	while (*list != NULL)
 	{
 		struct node* curr = *list;
-		if (pos == tempPos)
+		if (pos == tempPos) // found pos.
 		{
 			struct node* newNode = malloc(sizeof(struct node));
-			newNode->data = data;
-			prev->next = newNode;
-			newNode->next = curr;
-			*list = head;
-			return 0;
+			if (newNode != NULL)
+			{
+				newNode->data = data;
+				prev->next = newNode;
+				newNode->next = curr;
+				*list = head;
+				return 0;
+			}
+			else
+			{
+				printf("addPos: Memory allocation failed.\n");
+				exit(EXIT_FAILURE);
+			}
 		}
 		prev = curr;
 		*list = curr->next;
