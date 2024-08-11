@@ -21,7 +21,7 @@
     <ClCompile Include="singlyLinkedList.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="random.c">
+    <ClCompile Include="support.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -37,7 +37,7 @@
     <ClInclude Include="nodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="random.h">
+    <ClInclude Include="support.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

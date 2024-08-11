@@ -1,6 +1,6 @@
 #pragma once
+#include "support.h"
 #include "singlyLinkedList.h"
-#include "random.h"
 // sweeney's hand-rolled singly linked list.
 //
 // pos = "position".
@@ -14,19 +14,20 @@
 // -1	pos/ptr not in list.
 // -2	no action needed.
 
-void init(struct node** list, int data)
+int addNode(struct node** newNode, int data)
 {
-	struct node* newNode = malloc(sizeof(struct node));
-	if (newNode != NULL)
+	struct node* temp = malloc(sizeof(struct node));
+	if (temp != NULL)
 	{
-		newNode->data = data;
-		newNode->next = NULL;
-		*list = newNode;
+		temp->data = data;
+		temp->next = NULL;
+		*newNode = temp;
+		return 0;
 	}
 	else
 	{
-		printf("init: Memory allocation failed.\n");
-		exit(EXIT_FAILURE);
+		printf("Memory allocation failed.\n");
+		return 1;
 	}
 }
 
@@ -34,110 +35,104 @@ int addFront(struct node** list, int data)
 {
 	if (*list == NULL)
 	{
-		init(list, data);
-		return 0;
+		struct node* newNode = NULL;
+		int result = addNode(&newNode, data);
+		if (result == 0)
+		{
+			*list = newNode;
+		}
+		return result;
 	}
 
 	struct node* head = *list;
-	struct node* newHead = malloc(sizeof(struct node));
-	if (newHead != NULL)
+	struct node* newNode = NULL;
+	int result = addNode(&newNode, data);
+	if (result == 0)
 	{
-		newHead->data = data;
-		newHead->next = head;
-		*list = newHead;
-		return 0;
+		newNode->next = head;
+		*list = newNode;
 	}
-	else
-	{
-		printf("addFront: Memory allocation failed.\n");
-		exit(EXIT_FAILURE);
-	}
+	return result;
 }
 
 int addBack(struct node** list, int data)
 {
 	if (*list == NULL)
 	{
-		init(list, data);
-		return 0;
+		struct node* newNode = NULL;
+		int result = addNode(&newNode, data);
+		if (result == 0)
+		{
+			*list = newNode;
+		}
+		return result;
 	}
 
 	struct node* head = *list;
-	do {
+	while (*list != NULL)
+	{
 		struct node* curr = *list;
 		if (curr->next == NULL)
 		{
-			struct node* newNode = malloc(sizeof(struct node));
-			if (newNode != NULL)
+			struct node* newNode = NULL;
+			int result = addNode(&newNode, data);
+			if (result == 0)
 			{
-				newNode->data = data;
-				newNode->next = NULL;
 				curr->next = newNode;
 				*list = head;
 				return 0;
 			}
-			else
-			{
-				printf("addBack: Memory allocation failed.\n");
-				exit(EXIT_FAILURE);
-			}
 		}
 		*list = curr->next;
-	} while (*list != NULL);
+	}
+	*list = head;
+	return 1;
 }
 
 int addPos(struct node** list, int pos, int data)
 {
-	if (*list == NULL) return 1;
-
-	struct node* head = *list;
-	if (pos == 0) // add new head node.
+	if (*list == NULL) // list is empty.
 	{
-		struct node* newHead = malloc(sizeof(struct node));
-		if (newHead != NULL)
+		struct node* newNode = NULL;
+		int result = addNode(&newNode, data);
+		if (result == 0)
 		{
-			newHead->data = data;
-			newHead->next = head;
-			*list = newHead;
-			return 0;
+			*list = newNode;
 		}
-		else
-		{
-			printf("addPos: Memory allocation failed.\n");
-			exit(EXIT_FAILURE);
-		}
+		return result;
 	}
 
-	struct node* prev = head;
+	if (pos == 0) // call addFront function.
+	{
+		int result = addFront(list, data);
+		return 8756;
+	}
+	// else find pos in list.
+	struct node* head = *list;
 	*list = head->next;
 	int tempPos = 1;
-	// find pos in list.
+	struct node* prev = head;
 	while (*list != NULL)
 	{
 		struct node* curr = *list;
-		if (pos == tempPos) // found pos.
+		if (pos == tempPos)
 		{
-			struct node* newNode = malloc(sizeof(struct node));
-			if (newNode != NULL)
+			struct node* newNode = NULL;
+			int result = addNode(&newNode, data);
+			if (result == 0)
 			{
-				newNode->data = data;
 				prev->next = newNode;
 				newNode->next = curr;
-				*list = head;
-				return 0;
 			}
-			else
-			{
-				printf("addPos: Memory allocation failed.\n");
-				exit(EXIT_FAILURE);
-			}
+			*list = head;
+			return result;
 		}
+		++tempPos;
 		prev = curr;
 		*list = curr->next;
-		++tempPos;
 	}
-	*list = head; // position not in list, reset list.
-	return -1;
+	*list = head; // pos not in list, reset list.
+	return 1;
 }
 
 int deleteFront(struct node** list)
@@ -993,16 +988,17 @@ int size(struct node* list, int *nodeCount)
 
 int print(struct node* list)
 {
-	if (list == NULL) return 1;
+	if (list == NULL) return 1; // list is empty.
 
+	printf("#\tdata:\tcurr:\t\t\tnext:\n");
 	int tempPos = 0;
-	printf("#\tdata:\tlist:\t\t\tnext:\n");
-	do {
+	while (list != NULL)
+	{
 		printf("%d\t%d\t%p\t%p\n", tempPos, list->data, list, list->next);
 		++tempPos;
 		list = list->next;
-	} while (list != NULL);
-	printf("\n");
+	}
+	printf("Node count: %d\n\n", tempPos);
 	return 0;
 }
 
@@ -1231,7 +1227,7 @@ int shuffle(struct node** list)
 	struct node* ptr1 = NULL;
 	struct node* ptr2 = NULL;
 	int temp = 0; // dummy counter.
-	seedRand();
+	srand(time(NULL));
 	do {
 		position1 = getRandNum(0, nodeCount - 1); // get random list position.
 		do {

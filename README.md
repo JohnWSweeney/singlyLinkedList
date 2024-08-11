@@ -1,6 +1,11 @@
 # singlyLinkedList
 
 ## ChangeLog
+v0.0.18
+- Updated error handling for init(addNode), addFront, addBack, and addPos functions.
+- Updated print function.
+- Consolidated node.h and random.h/.c into support.h/.c, added populateList fuction.
+
 v0.0.17
 - Updated init, addFront, addBack, and addPos functions with malloc error checks.
 

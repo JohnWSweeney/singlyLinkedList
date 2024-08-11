@@ -1,6 +1,5 @@
 #pragma once
 #include <stdio.h>
-#include "nodes.h"
 // sweeney's hand-rolled singly linked list.
 //
 // pos = "position".
@@ -14,7 +13,7 @@
 // -1	pos/ptr not in list.
 // -2	no action needed.
 
-void init(struct node** list, int data);
+int addNode(struct node** newNode, int data);
 int addFront(struct node** list, int data);
 int addBack(struct node** list, int data);
 int addPos(struct node** list, int pos, int data);
